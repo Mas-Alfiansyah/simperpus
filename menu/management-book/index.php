@@ -35,7 +35,7 @@ if(isset($_GET['id']) && $_GET['id'] !== ''){
 }
 
 $buku = [];
-$sql = mysqli_query($conn, "SELECT buku. id, nama_buku, foto_buku, pengarang, tahun_terbit, kategori_id, stok, kategori.nama_kategori FROM buku INNER JOIN kategori ON buku.kategori_id = kategori.id");
+$sql = mysqli_query($conn, "SELECT * FROM buku");
 while($data = mysqli_fetch_assoc($sql)) {
     $buku[] = $data;
 }

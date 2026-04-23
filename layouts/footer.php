@@ -46,9 +46,10 @@
             showConfirmButton: false,
             timerProgressBar: true
         }).then(() => {
-            window.location.href = '<?= $redirect ?>';
-            // hapus query string pesan/tipe dari URL
-            window.history.replaceState({}, document.title, window.location.pathname);
+            const url = new URL(window.location);
+            url.searchParams.delete('pesan');
+            url.searchParams.delete('tipe');
+            window.history.replaceState({}, document.title, url.pathname);
         });
     <?php endif; ?>
 </script>
