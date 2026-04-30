@@ -1,6 +1,29 @@
 <?php include __DIR__ . '/../../layouts/layout.php'; 
 include __DIR__ . '/../../koneksi.php';
 
+if(isset($_POST['tambah'])) {
+    $judul = $_POST['judul'];
+    $pengarang = $_POST['pengarang'];
+    $kategori_id = $_POST['kategori_id'];
+    $tahun_terbit = $_POST['tahun_terbit'];
+    $stok = $_POST['stok'];
+
+    $tambah_data = mysqli_query($conn, 
+    "INSERT INTO buku (judul, pengarang, kategori_id, tahun_terbit, stok) 
+    VALUES ('$judul', '$pengarang', '$kategori_id', '$tahun_terbit', '$stok')");
+
+    if($tambah_data){
+        $pesan = "Buku berhasil ditambahkan!";
+        $tipe = "success";
+        $redirect = "index.php";
+    }else{
+        $pesan = "Gagal menambahkan buku!";
+        $tipe = "error";
+        $redirect = "add.php";}
+}
+
+$getkategori = mysqli_query($conn, 
+"SELECT id, nama_kategori FROM kategori WHERE status = 'active'");
 ?>
 <div class="p-2 max-w-2xl">
     <!-- Breadcrumb -->
@@ -55,7 +78,7 @@ include __DIR__ . '/../../koneksi.php';
                         <option value="">Select category...</option>
                         <?php while($data = mysqli_fetch_assoc($getkategori)) :?>
                             <option value="<?= $data['id']; ?>"><?= $data['nama_kategori']; ?></option>
-                            <?php endwhile; ?>
+                        <?php endwhile; ?>
                     </select>
                 </div>
                 <div>

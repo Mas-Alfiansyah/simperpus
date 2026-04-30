@@ -1,8 +1,14 @@
 <?php 
 include __DIR__ . '/../../koneksi.php';
 
-include __DIR__ . '/../../layouts/layout.php'; 
+$sql = mysqli_query($conn, "SELECT buku.*, kategori.nama_kategori FROM buku 
+                            JOIN kategori ON buku.kategori_id = kategori.id");
+$daftar_buku = [];
 
+while($data = mysqli_fetch_assoc($sql)) {
+    $daftar_buku[] = $data;
+}
+include __DIR__ . '/../../layouts/layout.php'; 
 ?>
 <div class="p-2 pb-0">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -73,7 +79,7 @@ include __DIR__ . '/../../layouts/layout.php';
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                     <!-- Row 1 - High Stock -->
-                     <?php foreach($getcategory as $book): ?>
+                     <?php foreach($daftar_buku as $book): ?>
                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                         <!-- <td class="px-6 py-4">
                             <div class="flex items-center gap-4">
@@ -95,11 +101,7 @@ include __DIR__ . '/../../layouts/layout.php';
                             <p class="text-sm text-slate-700 dark:text-slate-300"><?= $book['pengarang'] ?></p>
                         </td>
                         <td class="px-6 py-4">
-                            
-                            <span
-                                class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"><?= $book['nama_kategori'] ?>
-                            </span>
-                            
+                            <p class="text-sm text-slate-700 dark:text-slate-300"><?= $book['nama_kategori'] ?></p>
                         </td>
                         <td class="px-6 py-4">
                             <span

@@ -1,6 +1,37 @@
 <?php include __DIR__ . '/../../layouts/layout.php';
 include __DIR__ . '/../../koneksi.php';
 
+$id = $_GET['id'];
+$sql = mysqli_query($conn, "SELECT * FROM buku WHERE id = $id");
+$buku = mysqli_fetch_assoc($sql);
+
+
+$sqlkategori = mysqli_query($conn, "SELECT id, nama_kategori FROM kategori WHERE status = 'active'");
+
+if(isset($_POST['edit'])) {
+    $judul = $_POST['judul'];
+    $pengarang = $_POST['pengarang'];
+    $kategori_id = $_POST['kategori_id'];
+    $tahun_terbit = $_POST['tahun_terbit'];
+    $stok = $_POST['stok'];
+
+    $edit = mysqli_query($conn, "
+    UPDATE buku SET judul='$judul', pengarang='$pengarang', kategori_id='$kategori_id', 
+    tahun_terbit='$tahun_terbit', stok='$stok' WHERE id = $id");
+
+    if($edit){
+        $pesan = "Buku berhasil diupdate!";
+        $tipe = "success";
+        $redirect = "index.php";
+    }else{
+        $pesan = "Gagal mengupdate buku!";
+        $tipe = "error";
+        $redirect = "edit.php?id=$id";
+    }
+}
+
+
+
 ?>
 <div class="p-2 max-w-2xl">
     <!-- Breadcrumb -->
