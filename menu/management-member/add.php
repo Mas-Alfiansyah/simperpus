@@ -1,4 +1,27 @@
-<?php include __DIR__ . '/../../layouts/layout.php'; ?>
+<?php
+include __DIR__ . '/../../layouts/layout.php';
+include __DIR__ . '/../../koneksi.php';
+
+if (isset($_POST['create'])) {
+    $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+    $join_date = mysqli_real_escape_string($conn, $_POST['join_date']);
+    $status = mysqli_real_escape_string($conn, $_POST['status']);
+    $address = mysqli_real_escape_string($conn, $_POST['address']);
+
+    $query = mysqli_query($conn, "INSERT INTO anggota (full_name, email, phone, join_date, status, address) VALUES ('$full_name', '$email', '$phone', '$join_date', '$status', '$address')");
+    if ($query) {
+        $pesan = "Data Anggota Berhasil Ditambahkan!";
+        $tipe  = "success";
+        $redirect = 'index.php';
+    } else {
+        $pesan = "Data Anggota Gagal Ditambahkan!";
+        $tipe  = "error";
+        $redirect = 'add.php';
+    }
+}
+?>
 <div class="p-2 max-w-2xl">
     <!-- Breadcrumb -->
     <div class="flex items-center gap-2 text-sm text-slate-500 mb-6">
@@ -15,7 +38,7 @@
 
     <div
         class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-6">
-        <form action="#" method="POST" class="space-y-6">
+        <form action="" method="POST" class="space-y-6">
 
             <!-- Full Name -->
             <div>
@@ -25,32 +48,6 @@
                 <input type="text" id="full_name" name="full_name" required
                     class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-700/50 focus:border-blue-700 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 transition-colors"
                     placeholder="e.g. Budi Santoso" />
-            </div>
-
-            <!-- Member ID & Type (2 cols) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5"
-                        for="member_id">
-                        Member ID <span class="text-rose-500">*</span>
-                    </label>
-                    <input type="text" id="member_id" name="member_id" required
-                        class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-700/50 focus:border-blue-700 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 transition-colors"
-                        placeholder="e.g. MBR-2024-005" />
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5"
-                        for="member_type">
-                        Member Type <span class="text-rose-500">*</span>
-                    </label>
-                    <select id="member_type" name="member_type" required
-                        class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-700/50 focus:border-blue-700 text-sm text-slate-900 dark:text-slate-100 transition-colors">
-                        <option value="">Select type...</option>
-                        <option value="student">Student</option>
-                        <option value="lecturer">Lecturer</option>
-                        <option value="public">Public</option>
-                    </select>
-                </div>
             </div>
 
             <!-- Email & Phone (2 cols) -->
@@ -80,7 +77,7 @@
                         for="join_date">
                         Join Date <span class="text-rose-500">*</span>
                     </label>
-                    <input type="date" id="join_date" name="join_date" required
+                    <input type="date" id="join_date" name="join_date" required value="<?= date('Y-m-d') ?>"
                         class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-700/50 focus:border-blue-700 text-sm text-slate-900 dark:text-slate-100 transition-colors" />
                 </div>
                 <div>
@@ -112,7 +109,7 @@
                     class="px-6 py-2.5 rounded-lg text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                     Cancel
                 </a>
-                <button type="submit"
+                <button type="submit" name="create"
                     class="bg-blue-700 hover:bg-blue-700/90 text-white px-6 py-2.5 rounded-lg font-bold text-sm inline-flex items-center gap-2 shadow-lg shadow-blue-700/20 transition-all">
                     <span class="material-symbols-outlined text-[20px]">save</span>
                     Save Member
